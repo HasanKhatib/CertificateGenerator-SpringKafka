@@ -1,0 +1,15 @@
+topics:
+  birth-certificate:
+    input: birth-certificate-input
+    output: birth-certificate-output
+
+spring.kafka.streams:
+  application-id: birth-certificate
+  bootstrap.servers: localhost:9092
+  properties:
+    acks: all
+#    schema.registry.url: http://localhost:8081
+    processing.guarantee: exactly_once
+    default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+    default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
