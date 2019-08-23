@@ -1,6 +1,8 @@
-## PROJECT
+## PROJECT ##
+.pdf
 *.pdf
-logs
+logs/
+/logs/
 
 
 HELP.md
