@@ -15,14 +15,14 @@ import org.springframework.context.annotation.Configuration
 import java.util.*
 import org.springframework.kafka.annotation.EnableKafkaStreams
 
-//@EnableKafkaStreams
+@EnableKafkaStreams
 @Configuration
 class CertificateDataProcessor(@Value("\${topics.birth-certificate.input}") private val inputTopicName: String,
                                @Value("\${topics.birth-certificate.output}") private val outputTopicName: String){
     private val mapper = ObjectMapper()
     private val logger = LogManager.getLogger(CertificateDataProcessor::class.java)
 
-//    @Bean
+    @Bean
     fun processor(streamBuilder: StreamsBuilder) : KStream<String, String> = streamBuilder
             .stream<String, String>(inputTopicName)
             .map(::mapToCertificateObject)
@@ -40,16 +40,12 @@ class CertificateDataProcessor(@Value("\${topics.birth-certificate.input}") priv
         streamsConfiguration[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
         streamsConfiguration[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = Serdes.String().javaClass.name
 
-
         val builder = StreamsBuilder()
         val textLines = builder.stream<String, String>(inputTopicName)
 
         val wordCounts = textLines
                 .map(::mapToCertificateObject)
                 .apply { to(outputTopicName) }
-
-        //val streams = KafkaStreams(builder.build(), streamsConfiguration)
-        //streams.start()
     }
 
     private fun mapToCertificateObject(key: String, value: String): KeyValue<String, String> =
